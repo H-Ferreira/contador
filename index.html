@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador Regressivo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #1e1e2f;
+            color: #fff;
+        }
+
+        #contador {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            background: #292b45;
+            padding: 20px 40px;
+            border-radius: 15px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            justify-items: center;
+            align-items: center;
+        }
+
+        .tempo {
+            background-color: #3e3f5c;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 150px;
+            position: relative;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .tempo h1 {
+            font-size: 40px;
+            margin-bottom: 5px;
+            color: #ffffff;
+        }
+
+        .tempo p {
+            font-size: 16px;
+            text-transform: uppercase;
+            color: #a0a2c3;
+        }
+
+        .incentivo {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #ffffff;
+            text-align: center;
+            max-width: 600px;
+            background-color: #292b45;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsividade para telas menores */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .tempo {
+                width: 80px;
+                padding: 15px;
+            }
+
+            .tempo h1 {
+                font-size: 30px;
+            }
+
+            .tempo p {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .tempo {
+                width: 80px;
+                padding: 15px;
+            }
+
+            .tempo h1 {
+                font-size: 30px;
+            }
+
+            .tempo p {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="contador">
+        <div class="container">
+            <div class="tempo">
+                <h1 id="dias"></h1>
+                <p>Dias</p>
+            </div>
+            <div class="tempo">
+                <h1 id="horas"></h1>
+                <p>Horas</p>
+            </div>
+            <div class="tempo">
+                <h1 id="minutos"></h1>
+                <p>Minutos</p>
+            </div>
+            <div class="tempo">
+                <h1 id="segundos"></h1>
+                <p>Segundos</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="incentivo">
+        <p id="fraseBiblica"></p>
+    </div>
+
+    <script>
+        var dataAlvo = new Date("December 8, 2024 00:00:00").getTime();
+
+        var x = setInterval(function() {
+            var agora = new Date().getTime();
+            var diferenca = dataAlvo - agora;
+
+            var dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+            var horas = Math.floor((diferenca % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
+            var segundos = Math.floor((diferenca % (1000 * 60)) / 1000);
+
+            document.getElementById("dias").innerHTML = dias;
+            document.getElementById("horas").innerHTML = horas;
+            document.getElementById("minutos").innerHTML = minutos;
+            document.getElementById("segundos").innerHTML = segundos;
+
+            if (diferenca < 0) {
+                clearInterval(x);
+                document.getElementById("contador").innerHTML = "O tempo acabou!";
+                document.getElementById("fraseBiblica").innerHTML = "";
+            }
+        }, 1000);
+
+        // Alternar entre as duas frases bíblicas
+        var frases = [
+    "Seja forte e corajoso! Não se apavore nem desanime, pois o Senhor, o seu Deus, estará com você por onde você andar. — Josué 1:9",
+    "Confia no Senhor de todo o teu coração e não te estribes no teu próprio entendimento. — Provérbios 3:5",
+    "Tudo posso naquele que me fortalece. — Filipenses 4:13",
+    "O coração do homem planeja o seu caminho, mas o Senhor lhe dirige os passos. — Provérbios 16:9",
+    "Mas os que esperam no Senhor renovarão as suas forças. Subirão com asas como águias; correrão, e não se cansarão; caminharão, e não se fatigarão. — Isaías 40:31",
+    "O Senhor é a minha luz e a minha salvação; de quem terei medo? O Senhor é a fortaleza da minha vida; a quem temerei? — Salmo 27:1",
+    "Pois o Senhor dá sabedoria, e da sua boca procedem o conhecimento e o entendimento. — Provérbios 2:6",
+    "Lâmpada para os meus pés é tua palavra e luz, para o meu caminho. — Salmo 119:105",
+    "Esforça-te, e eu te ajudarei, diz o Senhor. — Isaías 41:10",
+    "Alegrem-se na esperança, sejam pacientes na tribulação, perseverem na oração. — Romanos 12:12",
+    "Clama a mim e responder-te-ei e anunciar-te-ei coisas grandes e ocultas, que não sabes. — Jeremias 33:3",
+    "Não temas, porque eu sou contigo; não te assombres, porque eu sou o teu Deus; eu te fortaleço e te ajudo, e te sustento com a destra da minha justiça. — Isaías 41:10",
+    "O Senhor é bom, um refúgio em tempos de angústia. Ele protege os que nele confiam. — Naum 1:7",
+    "Entregue o seu caminho ao Senhor; confie nele, e ele agirá. — Salmo 37:5",
+    "E sabemos que em todas as coisas Deus trabalha para o bem daqueles que o amam. — Romanos 8:28",
+    "O Senhor é o meu pastor; nada me faltará. — Salmo 23:1",
+    "Busquem, pois, em primeiro lugar o Reino de Deus e a sua justiça, e todas essas coisas lhes serão acrescentadas. — Mateus 6:33",
+    "Bem-aventurados os que choram, pois serão consolados. — Mateus 5:4",
+    "Deleite-se no Senhor, e ele atenderá aos desejos do seu coração. — Salmo 37:4",
+    "Deus é o nosso refúgio e a nossa fortaleza, auxílio sempre presente na adversidade. — Salmo 46:1",
+    "O Senhor te guardará de todo mal; ele guardará a tua alma. — Salmo 121:7",
+    "Mas graças a Deus, que nos dá a vitória por meio de nosso Senhor Jesus Cristo. — 1 Coríntios 15:57",
+    "Sede fortes, e o vosso coração se fortaleça, vós todos que esperais no Senhor. — Salmo 31:24",
+    "E o meu Deus, conforme a sua riqueza em glória, há de suprir em Cristo Jesus tudo aquilo de que vocês precisam. — Filipenses 4:19",
+    "A tua palavra é a verdade; santifica-os na verdade. — João 17:17",
+    "Porque, assim como os céus são mais altos do que a terra, assim são os meus caminhos mais altos do que os vossos caminhos, e os meus pensamentos mais altos do que os vossos pensamentos. — Isaías 55:9",
+    "Pedi, e dar-se-vos-á; buscai, e encontrareis; batei, e abrir-se-vos-á. — Mateus 7:7",
+    "O Senhor firma os passos de um homem, quando a conduta deste o agrada. — Salmo 37:23",
+    "Não se amoldem ao padrão deste mundo, mas transformem-se pela renovação da sua mente, para que sejam capazes de experimentar e comprovar a boa, agradável e perfeita vontade de Deus. — Romanos 12:2",
+    "Porque Deus não nos deu espírito de covardia, mas de poder, de amor e de moderação. — 2 Timóteo 1:7",
+    "Aquietai-vos, e sabei que eu sou Deus. — Salmo 46:10",
+    "Senhor, tu és a minha rocha e a minha fortaleza, o meu libertador. — Salmo 18:2",
+    "Entrega o teu caminho ao Senhor; confia nele, e ele tudo fará. — Salmo 37:5",
+    "Bem-aventurados os pacificadores, porque eles serão chamados filhos de Deus. — Mateus 5:9",
+    "Venham a mim, todos os que estão cansados e sobrecarregados, e eu lhes darei descanso. — Mateus 11:28",
+    "Este é o dia que o Senhor fez; regozijemo-nos e alegremo-nos nele. — Salmo 118:24",
+    "Os que semeiam em lágrimas segarão com alegria. — Salmo 126:5",
+    "O Senhor lutará por vocês; tão-somente acalmem-se. — Êxodo 14:14",
+    "Em paz me deito e logo adormeço, pois só tu, Senhor, me fazes viver em segurança. — Salmo 4:8",
+    "Fé é a certeza de que vamos receber as coisas que esperamos e a prova de que existem coisas que não podemos ver. — Hebreus 11:1",
+    "Bem-aventurados os que têm fome e sede de justiça, porque eles serão fartos. — Mateus 5:6",
+    "Perto está o Senhor de todos os que o invocam, de todos os que o invocam em verdade. — Salmo 145:18",
+    "Não andem ansiosos por coisa alguma, mas em tudo, pela oração e súplicas, com ação de graças, apresentem seus pedidos a Deus. — Filipenses 4:6",
+    "Pois quem é Deus além do Senhor? E quem é rocha senão o nosso Deus? — Salmo 18:31",
+    "Porque sou eu que conheço os planos que tenho para vocês, diz o Senhor, planos de fazê-los prosperar e não de causar dano, planos de dar-lhes esperança e um futuro. — Jeremias 29:11",
+    "Mas os que esperam no Senhor herdarão a terra. — Salmo 37:9",
+    "E, se alguém quiser tirar-lhe a túnica, deixe-lhe também a capa. — Mateus 5:40",
+    "Buscai ao Senhor enquanto se pode achar, invocai-o enquanto está perto. — Isaías 55:6"
+];
+
+
+
+        function trocarFraseBiblica() {
+            var indice = Math.floor(Math.random() * frases.length);
+            document.getElementById("fraseBiblica").innerHTML = frases[indice];
+        }
+
+        // Trocar a frase a cada 10 segundos
+        setInterval(trocarFraseBiblica, 600000);
+        trocarFraseBiblica();
+    </script>
+</body>
+</html>
